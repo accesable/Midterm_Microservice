@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw  # Replace with your desired password
+      MYSQL_DATABASE: my-database        # Replace with your desired database name
+      MYSQL_USER: user                   # Optional: Replace with your desired user
+      MYSQL_PASSWORD: password           # Optional: Replace with your desired password for the user
+    ports:
+      - "3306:3306"                      # Map TCP port 3306 in the container to the same port on the host
+    volumes:
+      - my-db:/var/lib/mysql             # Persist data even when the container stops
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      restart: always
+      environment:
+        PMA_HOST: db                       # Name of the MySQL service defined above
+        PMA_PORT: 3306                     # Port of the MySQL service
+        MYSQL_ROOT_PASSWORD: my-secret-pw  # Same as MYSQL_ROOT_PASSWORD in db service
+      ports:
+        - "8080:80"
+volumes:
+  my-db:
